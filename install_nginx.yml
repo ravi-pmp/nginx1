@@ -1,0 +1,26 @@
+---
+- name: download and install nginx 
+  hosts: myproxy
+  become: True
+  tasks:
+    - name: download nginx 
+      blockinfile:
+        path: /etc/yum.repos.d/nginx.repo
+        backup: yes
+        create: yes
+        block: |
+          [nginx]
+          name=nginx repo
+          baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+          gpgcheck=0
+          enabled=1
+    - name: install nginx 
+      yum:
+        name: nginx
+        state: present
+    - name: enable and start nginx 
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+        

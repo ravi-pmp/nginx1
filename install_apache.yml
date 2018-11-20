@@ -1,0 +1,22 @@
+---
+- name: download and install apache 
+  hosts: backend
+  become: True
+  tasks:
+    - name: install apache
+      yum:
+        name: httpd
+        state: present
+    - name: enable and start http 
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: download nginx 
+      copy:
+        dest: /var/www/html/index.html
+        backup: yes
+        content: Welcome to {{ansible_hostname}}
+        
+        
